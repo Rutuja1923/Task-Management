@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const completedTasks = document.querySelector('.completed-tasks-container');
 
     const tasksList = [] ;
+    let counter = -1 ;
 
     //adding date 
     mainContainer.querySelector('h4').innerText = `${getToday()}`;
@@ -83,20 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //adding new task to the tasksList array
         tasksList.push(task);
+        counter += 1 ;
         console.log(tasksList);
+
+        //create a tas-div for each newly added task
+        getTaskDiv(tasksList[counter]);
 
         //restting the input values
         addTaskForm.reset();  
 
     });
-
-    //add - task - button
-    const addTaskBtn = document.getElementById('add-task');
-    addTaskBtn.onclick = () => {
-        console.log('clicked add');
-        console.log('calling getTaskDiv()');
-        getTaskDiv();
-    };
 
     //search - by - filters - button - handler
     const searchByFiltersBtn = document.getElementById('search-by-filters');
@@ -120,8 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
     });
 
-    const getTaskDiv = ( ) => {
+    const getTaskDiv = (task) => {
         console.log('getting task div');
+        console.log(task);
+        console.log(task.id , task.title , task.description , task.priority , task.dueDate);
     }
 });
 
