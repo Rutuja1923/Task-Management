@@ -27,6 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    //to validate due date
+    const validateDueDate = (input) => {
+        let today = getTodaysDate() ;
+
+        //empty value
+        if (!input.value) {
+            input.setCustomValidity("Please Select a Due Date!");
+        }
+        //date less than today
+        else if (input.value && input.value < today) {
+            input.setCustomValidity("Due Date Already Over, Please Select Valid Date !");
+        }
+        //incase of valid due date
+        else {
+            input.setCustomValidity("");
+        }
+    }
+
+    //add the validation function to handle invalid and input events
+    const dueDateInput = document.getElementById('task-due-date');
+    if (dueDateInput) {
+        dueDateInput.addEventListener("invalid", () => validateDueDate(dueDateInput));
+        dueDateInput.addEventListener("input", () => validateDueDate(dueDateInput));
+    }
+
 });
 
 //utility functions
