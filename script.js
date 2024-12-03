@@ -52,6 +52,30 @@ document.addEventListener('DOMContentLoaded', () => {
         dueDateInput.addEventListener("input", () => validateDueDate(dueDateInput));
     }
 
+    //handling submission of input form
+    const addTaskForm = document.getElementById('add-task-form');
+    addTaskForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        dueDateInput && validateDueDate(dueDateInput);  //validating the due date
+
+        if (! addTaskForm.checkValidity()) {
+            return;                         //if validation failed , return !
+        }
+
+        const titleInput = document.getElementById('task-title');
+        const descriptionInput = document.getElementById('task-desc');
+        const priorityInput = document.getElementById('task-priority');
+    });
+
+    //add - task - button
+    const addTaskBtn = document.getElementById('add-task');
+    addTaskBtn.onclick = () => {
+        console.log('clicked add');
+        console.log('calling getTaskDiv()');
+        getTaskDiv();
+    };
+    
 });
 
 //utility functions
