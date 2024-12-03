@@ -68,6 +68,31 @@
                 <button type="submit" id ="add-task">Add</button>
             </form>
         </div>
+        <div class="filters-div" style="display: none;">
+            <p><span id="close-filters-form"><i class="fa fa-close"></i></span></p>
+            <h3>Apply Filters</h3>
+            <form id='filters-form'>
+                <label for="priority-filter">Priority</label>
+                <select name="priority" id="priority-filter">
+                    <option value="">Select Priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <br>
+                <label for="due-date-filter">Due Date</label>
+                <input type="date" name="due" id="due-date-filter">
+                <br>
+                <label for="status-filter">Status</label>
+                <select name="status" id="status-filter">
+                    <option value="">Select Status</option>
+                    <option value="low">Pending</option>
+                    <option value="medium">Completed</option>
+                </select>
+                <br>
+                <button type='submit' id='search-tasks'>Search</button>
+            </form>
+        </div>
         <div class="tasks-container">
             <div id="pending-tasks-container">
 
