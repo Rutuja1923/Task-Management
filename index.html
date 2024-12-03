@@ -14,7 +14,54 @@
     </div>
     <main>
         <div class="main-container">
-
+        </div>
+        <div class="form-div" style="display: none;">
+            <p><span id="close-form"><i class="fa fa-close"></i></span></p>
+            <h3>Add Task Details</h3>
+            <form action="" id="add-task-form">
+                <label for="task-title">Task Title</label>
+                <input 
+                    type="text" 
+                    name="title" 
+                    id="task-title" 
+                    placeholder="Enter Task Title ..." 
+                    required
+                    oninvalid="this.setCustomValidity('Please Provide a Task Title !')"
+                    oninput="this.setCustomValidity('')"
+                />
+                <br>
+                <label for="task-desc">Description</label>
+                <input 
+                    type="text" 
+                    name="desc" 
+                    id="task-desc" 
+                    placeholder="Enter Task Description ..."
+                />
+                <br>
+                <label for="task-priority">Priority Level</label>
+                <select 
+                    name="priority" 
+                    id="task-priority" 
+                    required
+                    oninvalid="this.setCustomValidity('Please Select Task Priority !')"
+                    oninput="this.setCustomValidity('')"
+                >
+                    <option value="">Select Priority</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <br>
+                <label for="task-due-date">Due Date</label>
+                <input 
+                    type="date" 
+                    name="due" 
+                    id="task-due-date" 
+                    required
+                />
+                <br>
+                <button type="submit" id ="add-task">Add</button>
+            </form>
         </div>
         <div class="tasks-container">
             <div id="pending-tasks-container">
