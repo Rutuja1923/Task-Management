@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pendingTasks = document.querySelector('.pending-tasks-container');
     const completedTasks = document.querySelector('.completed-tasks-container');
 
+    const tasksList = [] ;
+
     //adding date 
     mainContainer.querySelector('h4').innerText = `${getToday()}`;
 
@@ -66,6 +68,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const titleInput = document.getElementById('task-title');
         const descriptionInput = document.getElementById('task-desc');
         const priorityInput = document.getElementById('task-priority');
+
+        //getting a unique id for each div
+        const uniqueId = Date.now() + Math.random().toString(36).substring(2, 9);
+
+        //creating an object for each task
+        let task = {
+            id : uniqueId,
+            title : titleInput.value.trim(),
+            description : descriptionInput.value.trim(),
+            priority : priorityInput.value,
+            dueDate : dueDateInput.value,
+        };
+
+        //adding new task to the tasksList array
+        tasksList.push(task);
+        console.log(tasksList);
+
+        //restting the input values
+        addTaskForm.reset();  
+
     });
 
     //add - task - button
@@ -97,6 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
     filtersFrom.addEventListener('submit', (event) => {
         event.preventDefault();
     });
+
+    const getTaskDiv = ( ) => {
+        console.log('getting task div');
+    }
 });
 
 //utility functions
