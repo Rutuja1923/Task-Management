@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const pendingTasks = document.querySelector('.pending-tasks-container');
     const completedTasks = document.querySelector('.completed-tasks-container');
 
+    //adding date 
+    mainContainer.querySelector('h4').innerText = `${getToday()}`;
+
 });
 
 //utility functions
