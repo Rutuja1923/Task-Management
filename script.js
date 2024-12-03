@@ -75,7 +75,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('calling getTaskDiv()');
         getTaskDiv();
     };
-    
+
+    //search - by - filters - button - handler
+    const searchByFiltersBtn = document.getElementById('search-by-filters');
+    searchByFiltersBtn.addEventListener('click', () => {
+        if (filtersDiv.style.display === 'none') {
+            filtersDiv.style.display = 'block';
+        }    
+    });
+
+    //close - filters - form - button
+    const closeFiltersFormBtn = document.getElementById('close-filters-form');
+    closeFiltersFormBtn.addEventListener('click', ()=> {
+        if (filtersDiv.style.display === 'block') {
+            filtersDiv.style.display = 'none';
+        } 
+    });
+
+    //handling submission of filters form
+    const filtersFrom = document.getElementById('filters-form');
+    filtersFrom.addEventListener('submit', (event) => {
+        event.preventDefault();
+    });
 });
 
 //utility functions
