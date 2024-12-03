@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const formDiv = document.querySelector('.form-div');
     const filtersDiv = document.querySelector('.filters-div');
     const tasksContainer = document.querySelector('.tasks-container');
-    const pendingTasks = document.querySelector('.pending-tasks-container');
-    const completedTasks = document.querySelector('.completed-tasks-container');
+    const pendingTasks = document.querySelector('#pending-tasks-container');
+    const completedTasks = document.querySelector('#completed-tasks-container');
 
     const tasksList = [] ;
     let counter = -1 ;
@@ -117,10 +117,122 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
     });
 
+    //function to create the task div
     const getTaskDiv = (task) => {
-        console.log('getting task div');
-        console.log(task);
-        console.log(task.id , task.title , task.description , task.priority , task.dueDate);
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add('task-div');
+        taskDiv.classList.add('pending-task');
+        taskDiv.setAttribute('id',`${task.id}`);
+
+        const markAsCompleted = document.createElement('button');
+        markAsCompleted.setAttribute('id','tick-mark');
+        markAsCompleted.innerHTML = '<span><i class="fa fa-check-circle" <i class="fa fa-check-circle" style="font-size:36px;color:brown"></i></span>'
+        markAsCompleted.addEventListener('click', () => {
+            handleCompletedTask(task.id);
+        });
+        taskDiv.appendChild(markAsCompleted);
+
+        const titleHead = document.createElement('h3');
+        titleHead.innerText = task.title ;
+        taskDiv.appendChild(titleHead);
+
+        const desc = document.createElement('p');
+        if (task.description) {
+            desc.innerText = task.description ;
+        }
+        else{
+            desc.innerText = `Edit to Add Description...`;
+        }
+        taskDiv.appendChild(desc);
+
+        const prty = document.createElement('p');
+        prty.innerText = task.priority;
+        taskDiv.appendChild(prty);
+
+        const due = document.createElement('p');
+        due.innerText = task.dueDate;
+        taskDiv.appendChild(due);
+
+        const utilityDiv = document.createElement('div');
+        utilityDiv.classList.add('utility-div');
+
+        const editSpan = document.createElement('span');
+        editSpan.setAttribute('id','edit-icon');
+        editSpan.innerHTML = `<i class="fa fa-pencil fa-fw" aria-hidden="true"></i>`;
+        editSpan.addEventListener('click' , () => {
+            editTask(task);
+        });
+        utilityDiv.appendChild(editSpan);
+
+        const deleteSpan = document.createElement('span');
+        deleteSpan.setAttribute('id','delete-icon');
+        deleteSpan.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
+        deleteSpan.addEventListener('click' , () => {
+            deleteTask(task.taskId);
+        });
+        utilityDiv.appendChild(deleteSpan);
+
+        taskDiv.appendChild(utilityDiv);
+
+        pendingTasks.appendChild(taskDiv);
+    }
+
+    const editTask = (task) => {
+
+    }
+
+    const deleteTask = (taskId) => {
+        const currTaskDiv = document.querySelector(`#${taskId}`);
+        const confirmDelete = document.createElement('div');
+        confirmDelete.classList.add('confirm-delete');
+        confirmDelete.innerHTML = `
+            <p>This task will be permanently deleted. Do you want to proceed?</p>
+            <div>
+                <button id='ok-btn'>Ok</button>
+                <button id='cancel-btn'>Cancel</button>
+            </div>
+        `;
+        currTaskDiv.getElementById('ok-btn').addEventListener('click',() => {
+            currTaskDiv.style.display = 'none';
+            if (currTaskDiv.classList.contains('pending-tasks-container')) {
+                pendingTasks.removeChild(currTaskDiv);
+            }
+            else if (currTaskDiv.classList.contains('completed-tasks-container')) {
+                completedTasks.removeChild(currTaskDiv);
+            }
+            //currTaskDiv.remove();
+            tasksList = tasksList.filter(task => 
+                task.id !== taskId
+            );
+        });
+        currTaskDiv.getElementById('cancel-btn').addEventListener('click', () => {
+            confirmDelete.style.display = 'none';
+        });
+        currTaskDiv.appendChild(confirmDelete);
+    }
+
+    const handleCompletedTask = (taskId) => {
+        const currTaskDiv = document.querySelector(`#${taskId}`);
+        const btn = currTaskDiv.querySelector(`#tick-mark`);
+
+        btn.addEventListener('click' , () => {
+            if (currTaskDiv.classList.contains('pendingTasks')) {
+                currTaskDiv.classList.add('completedTasks');
+                currTaskDiv.classList.remove('pendingTasks');
+                currTaskDiv.querySelector('h3').style.textDecoration = 'line-through';
+                currTaskDiv.style.color = '#616060' ;
+                currTaskDiv.querySelector('.edit-icon').disabled = true ;
+                currTaskDiv.querySelector('.delete-icon').disabled = true ;
+            }
+            else {
+                currTaskDiv.classList.remove('completedTasks');
+                currTaskDiv.classList.add('pendingTasks');
+                currTaskDiv.querySelector('h3').style.textDecoration = 'none'; // Revert text decoration
+                currTaskDiv.style.color = 'black'; // Reset color
+                currTaskDiv.querySelector('.edit-icon').disabled = false; // Re-enable icons
+                currTaskDiv.querySelector('.delete-icon').disabled = false;
+            }
+        });
     }
 });
 
