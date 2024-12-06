@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const formDiv = document.querySelector('.form-div');
     const filtersDiv = document.querySelector('.filters-div');
     const tasksContainer = document.querySelector('.tasks-container');
-    const pendingTasks = document.querySelector('#pending-tasks-container');
-    const completedTasks = document.querySelector('#completed-tasks-container');
+    const pendingTasks = document.querySelector('.pending-tasks-container');
+    const completedTasks = document.querySelector('.completed-tasks-container');
 
     const tasksList = [] ;
     let counter = -1 ;
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //new-task-button
     const newTaskBtn = document.getElementById('new-task-btn');
     newTaskBtn.addEventListener('click', () => {
-        console.log('clicked new task btn');
         if (formDiv.style.display === 'none') {
             formDiv.style.display = 'block';
         }
@@ -123,16 +122,18 @@ document.addEventListener('DOMContentLoaded', () => {
         taskDiv.classList.add('task-div');
         taskDiv.classList.add('pending-task');
         taskDiv.setAttribute('id',`${task.id}`);
+        console.log(taskDiv.id);
 
         const markAsCompleted = document.createElement('button');
         markAsCompleted.setAttribute('id','tick-mark');
-        markAsCompleted.innerHTML = '<span><i class="fa fa-check-circle" <i class="fa fa-check-circle" style="font-size:36px;color:brown"></i></span>'
+        markAsCompleted.innerHTML = '<span><i class="fa fa-check-circle" <i class="fa fa-check-circle"></i></span>'
         markAsCompleted.addEventListener('click', () => {
             handleCompletedTask(task.id);
         });
         taskDiv.appendChild(markAsCompleted);
 
         const titleHead = document.createElement('h3');
+        titleHead.setAttribute('id' , 'title-head');
         titleHead.innerText = task.title ;
         taskDiv.appendChild(titleHead);
 
@@ -178,11 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const editTask = (task) => {
+        console.log('editing task');
 
     }
 
     const deleteTask = (taskId) => {
-        const currTaskDiv = document.querySelector(`#${taskId}`);
+        const currTaskDiv = document.getElementById(`${taskId}`);
+
         const confirmDelete = document.createElement('div');
         confirmDelete.classList.add('confirm-delete');
         confirmDelete.innerHTML = `
@@ -192,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id='cancel-btn'>Cancel</button>
             </div>
         `;
+        currTaskDiv.appendChild(confirmDelete);
         currTaskDiv.getElementById('ok-btn').addEventListener('click',() => {
             currTaskDiv.style.display = 'none';
             if (currTaskDiv.classList.contains('pending-tasks-container')) {
@@ -208,31 +212,38 @@ document.addEventListener('DOMContentLoaded', () => {
         currTaskDiv.getElementById('cancel-btn').addEventListener('click', () => {
             confirmDelete.style.display = 'none';
         });
-        currTaskDiv.appendChild(confirmDelete);
+        
     }
 
     const handleCompletedTask = (taskId) => {
-        const currTaskDiv = document.querySelector(`#${taskId}`);
-        const btn = currTaskDiv.querySelector(`#tick-mark`);
+        const currTaskDiv = document.getElementById(`${taskId}`);
+        const tickmark = document.getElementById('tick-mark');
 
-        btn.addEventListener('click' , () => {
-            if (currTaskDiv.classList.contains('pendingTasks')) {
-                currTaskDiv.classList.add('completedTasks');
-                currTaskDiv.classList.remove('pendingTasks');
-                currTaskDiv.querySelector('h3').style.textDecoration = 'line-through';
-                currTaskDiv.style.color = '#616060' ;
-                currTaskDiv.querySelector('.edit-icon').disabled = true ;
-                currTaskDiv.querySelector('.delete-icon').disabled = true ;
-            }
-            else {
-                currTaskDiv.classList.remove('completedTasks');
-                currTaskDiv.classList.add('pendingTasks');
-                currTaskDiv.querySelector('h3').style.textDecoration = 'none'; // Revert text decoration
-                currTaskDiv.style.color = 'black'; // Reset color
-                currTaskDiv.querySelector('.edit-icon').disabled = false; // Re-enable icons
-                currTaskDiv.querySelector('.delete-icon').disabled = false;
-            }
-        });
+
+        if (currTaskDiv.classList.contains('pending-task')) {
+            currTaskDiv.classList.add('completed-task');
+            currTaskDiv.classList.remove('pending-task');
+            document.getElementById('title-head').style.textDecoration = 'line-through';
+            currTaskDiv.style.color = '#616060' ;
+            currTaskDiv.style.backgroundColor = "rgb(215,525,225)";
+            tickmark.style.color = "green" ;
+            document.getElementById('edit-icon').disabled = true ;
+            document.getElementById('delete-icon').disabled = true ;
+            pendingTasks.removeChild(currTaskDiv);
+            completedTasks.appendChild(currTaskDiv);            
+        }
+        else {
+            currTaskDiv.classList.remove('completed-task');
+            currTaskDiv.classList.add('pending-task');
+            document.getElementById('title-head').style.textDecoration = 'none'; 
+            currTaskDiv.style.color = 'black';
+            currTaskDiv.style.backgroundColor = ""; 
+            tickmark.style.color = "" ;
+            document.getElementById('edit-icon').disabled = false; 
+            document.getElementById('delete-icon').disabled = false;
+            completedTasks.removeChild(currTaskDiv);
+            pendingTasks.appendChild(currTaskDiv);
+        }
     }
 });
 
