@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pendingTasks = document.querySelector('.pending-tasks-container');
     const completedTasks = document.querySelector('.completed-tasks-container');
 
-    const tasksList = [] ;
+    let tasksList = [] ;
     let counter = -1 ;
 
     //adding date 
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editSpan.setAttribute('id','edit-icon');
         editSpan.innerHTML = `<i class="fa fa-pencil fa-fw" aria-hidden="true"></i>`;
         editSpan.addEventListener('click' , () => {
-            editTask(task);
+            editTask(task.id);
         });
         utilityDiv.appendChild(editSpan);
 
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteSpan.setAttribute('id','delete-icon');
         deleteSpan.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
         deleteSpan.addEventListener('click' , () => {
-            deleteTask(task.taskId);
+            deleteTask(task.id);
         });
         utilityDiv.appendChild(deleteSpan);
 
@@ -178,8 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
         pendingTasks.appendChild(taskDiv);
     }
 
-    const editTask = (task) => {
+    const editTask = (taskId) => {
         console.log('editing task');
+        console.log(taskId);
 
     }
 
@@ -196,12 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         currTaskDiv.appendChild(confirmDelete);
-        currTaskDiv.getElementById('ok-btn').addEventListener('click',() => {
+
+        const okBtn = confirmDelete.querySelector('#ok-btn');
+        const cancelBtn = confirmDelete.querySelector('#cancel-btn');
+
+        okBtn.addEventListener('click',() => {
             currTaskDiv.style.display = 'none';
-            if (currTaskDiv.classList.contains('pending-tasks-container')) {
+            if (currTaskDiv.classList.contains('pending-task')) {
                 pendingTasks.removeChild(currTaskDiv);
             }
-            else if (currTaskDiv.classList.contains('completed-tasks-container')) {
+            else if (currTaskDiv.classList.contains('completed-task')) {
                 completedTasks.removeChild(currTaskDiv);
             }
             //currTaskDiv.remove();
@@ -209,38 +214,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 task.id !== taskId
             );
         });
-        currTaskDiv.getElementById('cancel-btn').addEventListener('click', () => {
+        cancelBtn.addEventListener('click', () => {
             confirmDelete.style.display = 'none';
         });
-        
     }
 
     const handleCompletedTask = (taskId) => {
         const currTaskDiv = document.getElementById(`${taskId}`);
-        const tickmark = document.getElementById('tick-mark');
-
+        const tickmark = currTaskDiv.querySelector('#tick-mark');
+        const editIcon = currTaskDiv.querySelector('#edit-icon');
+        const deleteIcon = currTaskDiv.querySelector('#delete-icon');
+        const titleHead = currTaskDiv.querySelector('#title-head');
 
         if (currTaskDiv.classList.contains('pending-task')) {
             currTaskDiv.classList.add('completed-task');
             currTaskDiv.classList.remove('pending-task');
-            document.getElementById('title-head').style.textDecoration = 'line-through';
+            titleHead.style.textDecoration = 'line-through';
             currTaskDiv.style.color = '#616060' ;
             currTaskDiv.style.backgroundColor = "rgb(215,525,225)";
             tickmark.style.color = "green" ;
-            document.getElementById('edit-icon').disabled = true ;
-            document.getElementById('delete-icon').disabled = true ;
+            editIcon.disabled = true;
+            deleteIcon.disabled = true;
+            editIcon.style.pointerEvents = 'none'; 
+            deleteIcon.style.pointerEvents = 'none';
             pendingTasks.removeChild(currTaskDiv);
             completedTasks.appendChild(currTaskDiv);            
         }
         else {
             currTaskDiv.classList.remove('completed-task');
             currTaskDiv.classList.add('pending-task');
-            document.getElementById('title-head').style.textDecoration = 'none'; 
+            titleHead.style.textDecoration = 'none'; 
             currTaskDiv.style.color = 'black';
             currTaskDiv.style.backgroundColor = ""; 
             tickmark.style.color = "" ;
-            document.getElementById('edit-icon').disabled = false; 
-            document.getElementById('delete-icon').disabled = false;
+            editIcon.disabled = false;
+            deleteIcon.disabled = false;
+            editIcon.style.pointerEvents = 'auto';
+            deleteIcon.style.pointerEvents = 'auto';
             completedTasks.removeChild(currTaskDiv);
             pendingTasks.appendChild(currTaskDiv);
         }
