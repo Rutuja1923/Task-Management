@@ -291,3 +291,27 @@ function createLabel(labelText, forId) {
     label.textContent = labelText;
     return label;
 }
+
+//function to create input
+function createInput(type, name, id, placeholder, value = "", required = false, invalidMsg = "") {
+    const input = document.createElement("input");
+    input.setAttribute("type", type);
+    input.setAttribute("name", name);
+    input.setAttribute("id", id);
+    if (placeholder) {
+        input.setAttribute("placeholder", placeholder);
+    }
+    if (value) {
+        input.setAttribute("value", value);
+    }
+    if (required && type !== "date") {
+        input.setAttribute("required", true);
+        input.setAttribute("oninvalid", `this.setCustomValidity('${invalidMsg}')`);
+        input.setAttribute("oninput", "this.setCustomValidity('')");
+    }
+    else if (required && type === "date") {
+        input.addEventListener("invalid", () => validateDueDate(input));
+        input.addEventListener("input", () => validateDueDate(input));
+    }
+    return input;
+}
