@@ -210,6 +210,28 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.id = "save-task";
         submitButton.textContent = "Save";
 
+        editTaskForm.appendChild(titleLabel);
+        editTaskForm.appendChild(titleInput);
+        editTaskForm.appendChild(document.createElement("br"));
+
+        editTaskForm.appendChild(descLabel);
+        editTaskForm.appendChild(descInput);
+        editTaskForm.appendChild(document.createElement("br"));
+
+        editTaskForm.appendChild(priorityLabel);
+        editTaskForm.appendChild(prioritySelect);
+        editTaskForm.appendChild(document.createElement("br"));
+
+        editTaskForm.appendChild(dueDateLabel);
+        editTaskForm.appendChild(dueDateInput);
+        editTaskForm.appendChild(document.createElement("br"));
+
+        editTaskForm.appendChild(submitButton);
+
+        editFormDiv.appendChild(editTaskForm);
+
+        pendingTasks.appendChild(editFormDiv);
+
     }
 
     const deleteTask = (taskId) => {
