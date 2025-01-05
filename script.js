@@ -284,3 +284,10 @@ const validateDueDate = (input) => {
     }
 }
 
+//function to create label
+function createLabel(labelText, forId) {
+    const label = document.createElement("label");
+    label.setAttribute("for", forId);
+    label.textContent = labelText;
+    return label;
+}
