@@ -232,6 +232,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         pendingTasks.appendChild(editFormDiv);
 
+        editTaskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const formData = new FormData(editTaskForm);
+
+            const updatedTask = {
+                id: taskId,
+                title: formData.get("title"),
+                description: formData.get("desc"),
+                priority: formData.get("priority"),
+                dueDate: formData.get("due"),
+            };
+            tasksList = tasksList.map(task => (task.id === taskId ? updatedTask : task));
+            console.log(tasksList);
+            editTaskForm.style.display = 'none';
+
+            //const taskEditDiv = document.getElementById(taskId);
+            document.getElementById(`title-${taskId}`).innerText = formData.get("title");
+            document.getElementById(`desc-${taskId}`).innerText = formData.get("desc");
+            document.getElementById(`priority-${taskId}`).innerText = formData.get("priority");
+            document.getElementById(`due-${taskId}`).innerText = formData.get("due");
+        });
+
     }
 
     const deleteTask = (taskId) => {
