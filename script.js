@@ -29,24 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    //to validate due date
-    const validateDueDate = (input) => {
-        let today = getTodaysDate() ;
-
-        //empty value
-        if (!input.value) {
-            input.setCustomValidity("Please Select a Due Date!");
-        }
-        //date less than today
-        else if (input.value && input.value < today) {
-            input.setCustomValidity("Due Date Already Over, Please Select Valid Date !");
-        }
-        //incase of valid due date
-        else {
-            input.setCustomValidity("");
-        }
-    }
-
     //add the validation function to handle invalid and input events
     const dueDateInput = document.getElementById('task-due-date');
     if (dueDateInput) {
@@ -91,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //restting the input values
         addTaskForm.reset();  
-
+        formDiv.style.display = 'none';
     });
 
     //search - by - filters - button - handler
@@ -114,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtersFrom = document.getElementById('filters-form');
     filtersFrom.addEventListener('submit', (event) => {
         event.preventDefault();
+        filtersDiv.style.display = 'none';
     });
 
     //function to create the task div
@@ -133,11 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         taskDiv.appendChild(markAsCompleted);
 
         const titleHead = document.createElement('h3');
-        titleHead.setAttribute('id' , 'title-head');
+        titleHead.setAttribute('id' , `title-${task.id}`);
         titleHead.innerText = task.title ;
         taskDiv.appendChild(titleHead);
 
         const desc = document.createElement('p');
+        desc.setAttribute('id',`desc-${task.id}`)
         if (task.description) {
             desc.innerText = task.description ;
         }
@@ -147,10 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
         taskDiv.appendChild(desc);
 
         const prty = document.createElement('p');
+        prty.setAttribute('id',`priority-${task.id}`)
         prty.innerText = task.priority;
         taskDiv.appendChild(prty);
 
         const due = document.createElement('p');
+        due.setAttribute('id',`due-${task.id}`);
         due.innerText = task.dueDate;
         taskDiv.appendChild(due);
 
@@ -181,6 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const editTask = (taskId) => {
         console.log('editing task');
         console.log(taskId);
+        let taskToEdit = tasksList.find(task => task.id === taskId);
+        console.log(taskToEdit); 
 
     }
 
@@ -277,3 +265,22 @@ const getToday = () => {
     const year = today.getFullYear();
     return `${day}, ${date} ${mon} ${year}`;
 }
+
+//to validate due date
+const validateDueDate = (input) => {
+    let today = getTodaysDate() ;
+
+    //empty value
+    if (!input.value) {
+        input.setCustomValidity("Please Select a Due Date!");
+    }
+    //date less than today
+    else if (input.value && input.value < today) {
+        input.setCustomValidity("Due Date Already Over, Please Select Valid Date !");
+    }
+    //incase of valid due date
+    else {
+        input.setCustomValidity("");
+    }
+}
+
