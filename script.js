@@ -170,6 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let taskToEdit = tasksList.find(task => task.id === taskId);
         console.log(taskToEdit); 
 
+        const editFormDiv = document.createElement('div');
+        editFormDiv.setAttribute('id','edit-form-div');
+        
+        const editTaskForm = document.createElement('form');
+        editTaskForm.setAttribute('action','');
+        editTaskForm.setAttribute('id','edit-task-form');
+
     }
 
     const deleteTask = (taskId) => {
