@@ -177,6 +177,39 @@ document.addEventListener('DOMContentLoaded', () => {
         editTaskForm.setAttribute('action','');
         editTaskForm.setAttribute('id','edit-task-form');
 
+        const titleLabel = createLabel("Task Title", "task-title");
+        const titleInput = createInput("text", "title", "task-title", "Enter Task Title ...", taskToEdit.title, true, "Please Provide a Task Title!");
+
+        const descLabel = createLabel("Description", "task-desc");
+        const descInput = createInput("text", "desc", "task-desc", "Enter Task Description ...", taskToEdit.description);
+
+        const priorityLabel = createLabel("Priority Level", "task-priority");
+        const prioritySelect = document.createElement("select");
+        prioritySelect.setAttribute("name", "priority");
+        prioritySelect.setAttribute("id", "task-priority");
+        prioritySelect.setAttribute("required", true);
+        prioritySelect.setAttribute("oninvalid", "this.setCustomValidity('Please Select Task Priority!')");
+        prioritySelect.setAttribute("oninput", "this.setCustomValidity('')");
+
+        const priorities = ["", "Low", "Medium", "High"];
+        priorities.forEach(priority => {
+            const option = document.createElement("option");
+            option.value = priority;
+            option.textContent = priority === "" ? "Select Priority" : priority;
+            if (priority === taskToEdit.priority) {
+                option.selected = true;
+            }
+            prioritySelect.appendChild(option);
+        });
+
+        const dueDateLabel = createLabel("Due Date", "task-due-date");
+        const dueDateInput = createInput("date", "due", "task-due-date", "", taskToEdit.dueDate, true, "");
+
+        const submitButton = document.createElement("button");
+        submitButton.type = "submit";
+        submitButton.id = "save-task";
+        submitButton.textContent = "Save";
+
     }
 
     const deleteTask = (taskId) => {
