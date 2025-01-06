@@ -164,25 +164,40 @@ document.addEventListener('DOMContentLoaded', () => {
         pendingTasks.appendChild(taskDiv);
     }
 
+    //function to edit the task div
     const editTask = (taskId) => {
-        console.log('editing task');
-        console.log(taskId);
+        //find the task from the required list
         let taskToEdit = tasksList.find(task => task.id === taskId);
-        console.log(taskToEdit); 
 
+        //create a container t hold form
         const editFormDiv = document.createElement('div');
         editFormDiv.setAttribute('id','edit-form-div');
+
+        //close edit-task-form button
+        const cancelEdit = document.createElement('p');
+        cancelEdit.innerHTML = `<span id="close-edit-form"><i class="fa fa-close"></i></span>`;
+        cancelEdit.addEventListener('click',() => {
+            editFormDiv.style.display = 'none';
+        });
+
+        //form-title
+        const formTitle = document.createElement('h3');
+        formTitle.innerText = 'Edit Task';
         
+        //create a form to hold default values
         const editTaskForm = document.createElement('form');
         editTaskForm.setAttribute('action','');
         editTaskForm.setAttribute('id','edit-task-form');
 
+        //task-title
         const titleLabel = createLabel("Task Title", "task-title");
         const titleInput = createInput("text", "title", "task-title", "Enter Task Title ...", taskToEdit.title, true, "Please Provide a Task Title!");
 
+        //task-description
         const descLabel = createLabel("Description", "task-desc");
         const descInput = createInput("text", "desc", "task-desc", "Enter Task Description ...", taskToEdit.description);
 
+        //task-priority
         const priorityLabel = createLabel("Priority Level", "task-priority");
         const prioritySelect = document.createElement("select");
         prioritySelect.setAttribute("name", "priority");
@@ -191,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         prioritySelect.setAttribute("oninvalid", "this.setCustomValidity('Please Select Task Priority!')");
         prioritySelect.setAttribute("oninput", "this.setCustomValidity('')");
 
+        //task-priority values
         const priorities = ["", "Low", "Medium", "High"];
         priorities.forEach(priority => {
             const option = document.createElement("option");
@@ -202,14 +218,17 @@ document.addEventListener('DOMContentLoaded', () => {
             prioritySelect.appendChild(option);
         });
 
+        //task-due-date
         const dueDateLabel = createLabel("Due Date", "task-due-date");
         const dueDateInput = createInput("date", "due", "task-due-date", "", taskToEdit.dueDate, true, "");
 
+        //submit button - save 
         const submitButton = document.createElement("button");
         submitButton.type = "submit";
         submitButton.id = "save-task";
         submitButton.textContent = "Save";
 
+        //append all the input values and submit button to the edit form
         editTaskForm.appendChild(titleLabel);
         editTaskForm.appendChild(titleInput);
         editTaskForm.appendChild(document.createElement("br"));
@@ -228,14 +247,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         editTaskForm.appendChild(submitButton);
 
+        //append close btn, form-title, edit form to the container
+        editFormDiv.appendChild(cancelEdit);
+        editFormDiv.appendChild(formTitle);
         editFormDiv.appendChild(editTaskForm);
 
+        //append container to the parent div
         pendingTasks.appendChild(editFormDiv);
 
+        //add click event listener to the submit button
         editTaskForm.addEventListener('submit', (event) => {
             event.preventDefault();
+
+            //get the form data
             const formData = new FormData(editTaskForm);
 
+            //create an object with task details
             const updatedTask = {
                 id: taskId,
                 title: formData.get("title"),
@@ -243,11 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 priority: formData.get("priority"),
                 dueDate: formData.get("due"),
             };
-            tasksList = tasksList.map(task => (task.id === taskId ? updatedTask : task));
-            console.log(tasksList);
-            editTaskForm.style.display = 'none';
 
-            //const taskEditDiv = document.getElementById(taskId);
+            //remap the values to the existing id
+            tasksList = tasksList.map(task => (task.id === taskId ? updatedTask : task));
+
+            //once the save button is clicked it should disappear
+            editFormDiv.style.display = 'none';
+
+            //change the content of previous task with newly enetred task
             document.getElementById(`title-${taskId}`).innerText = formData.get("title");
             document.getElementById(`desc-${taskId}`).innerText = formData.get("desc");
             document.getElementById(`priority-${taskId}`).innerText = formData.get("priority");
