@@ -286,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    //function to delete the task
     const deleteTask = (taskId) => {
         const currTaskDiv = document.getElementById(`${taskId}`);
 
@@ -304,6 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cancelBtn = confirmDelete.querySelector('#cancel-btn');
 
         okBtn.addEventListener('click',() => {
+            counter--;
             currTaskDiv.style.display = 'none';
             if (currTaskDiv.classList.contains('pending-task')) {
                 pendingTasks.removeChild(currTaskDiv);
@@ -321,12 +323,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    //function to handle the completed task
     const handleCompletedTask = (taskId) => {
         const currTaskDiv = document.getElementById(`${taskId}`);
         const tickmark = currTaskDiv.querySelector('#tick-mark');
         const editIcon = currTaskDiv.querySelector('#edit-icon');
         const deleteIcon = currTaskDiv.querySelector('#delete-icon');
-        const titleHead = currTaskDiv.querySelector('#title-head');
+        const titleHead = currTaskDiv.querySelector(`#title-${taskId}`);
 
         if (currTaskDiv.classList.contains('pending-task')) {
             currTaskDiv.classList.add('completed-task');
@@ -357,6 +360,10 @@ document.addEventListener('DOMContentLoaded', () => {
             pendingTasks.appendChild(currTaskDiv);
         }
     }
+
+    //function to apply search filter
+    
+
 });
 
 //utility functions
